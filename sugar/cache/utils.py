@@ -1,4 +1,6 @@
-import re, md5
+import re
+import hashlib
+
 from django.db.models.manager import Manager
 from django.utils.encoding import smart_str
 
@@ -10,7 +12,7 @@ def clean_cache_key(key):
 	cache_key = smart_str(cache_key)
 
 	if len(cache_key) > 250:
-		 cache_key = cache_key[:200] + '-' + md5.new(cache_key).hexdigest()
+		 cache_key = cache_key[:200] + '-' + hashlib.md5(cache_key).hexdigest()
 
 	return cache_key
 	
