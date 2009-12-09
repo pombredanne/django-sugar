@@ -57,7 +57,8 @@ class QueryStringAlterer(template.Node):
         for arg in self.args:
             if arg.startswith("delete:"):
                 v = arg[7:]
-                del qs[v]
+                if v in qs:
+                    del qs[v]
             else:
                 k, v = arg.split("=", 2)
                 qs[k] = template.Variable(v).resolve(context)
