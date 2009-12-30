@@ -1,6 +1,9 @@
+import re
+
 from django import template
 
 register = template.Library()
+
 
 @register.filter
 def truncchar(value, arg):
@@ -26,3 +29,33 @@ def truncchar(value, arg):
         return value
     else:
         return value[:arg] + '...'
+
+
+@register.filter
+def re_sub(string, args):
+    """
+    Provide a full regular expression replace on strings in templates
+
+    Usage:
+
+    {{ my_variable|re_sub:"/(foo|bar)/baaz/" }}
+    """
+    old = args.split(args[0])[1]
+    new = args.split(args[0])[2]
+
+    return re.sub(old, new, string)
+
+
+@register.filter
+def replace(string, args):
+    """
+    Provide a standard Python string replace in templates
+
+    Usage:
+
+    {{ my_variable|replace:"/foo/bar/" }}
+    """
+    old = args.split(args[0])[1]
+    new = args.split(args[0])[2]
+
+    return string.replace(old, new)
