@@ -5,7 +5,6 @@ try:
 except ImportError:
     import md5
 
-
 from django.db.models.manager import Manager
 from django.utils.encoding import smart_str
 
