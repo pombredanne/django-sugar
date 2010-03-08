@@ -20,7 +20,7 @@ def render_inline(parser, token):
 
     Usage:
 
-    {% render_inline %}
+    {%% render_inline %%}
     Foo
 
     Bar
@@ -29,7 +29,7 @@ def render_inline(parser, token):
 
     Baaz
 
-    {% end_render_inline %}
+    {%% end_render_inline %%}
 
     """
 

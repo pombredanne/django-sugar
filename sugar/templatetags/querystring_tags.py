@@ -17,7 +17,7 @@ class QueryStringAlterer(template.Node):
     and a list of changes to apply. The result will be returned as text query
     string, allowing use like this::
 
-        <a href="?{% qs_alter request.GET type=object.type %}">{{ label }}</a>
+        <a href="?{%% qs_alter request.GET type=object.type %%}">{{ label }}</a>
 
     There are two available alterations:
 
@@ -33,13 +33,13 @@ class QueryStringAlterer(template.Node):
 
     Query string provided as QueryDict::
 
-        {% qs_alter request.GET foo=bar %}
-        {% qs_alter request.GET foo=bar baaz=quux %}
-        {% qs_alter request.GET foo=bar baaz=quux delete:corge %}
+        {%% qs_alter request.GET foo=bar %%}
+        {%% qs_alter request.GET foo=bar baaz=quux %%}
+        {%% qs_alter request.GET foo=bar baaz=quux delete:corge %%}
 
     Query string provided as string::
 
-        {% qs_alter "foo=baaz" foo=bar %}">
+        {%% qs_alter "foo=baaz" foo=bar %%}">
     """
 
     def __init__(self, base_qs, *args):
