@@ -1,11 +1,11 @@
 from django.template import Library, Node
 from django.template.loader import render_to_string
-from django.contrib.sites.models import Site    
+from django.contrib.sites.models import Site
 from django.conf import settings
 import os, urlparse
-     
+
 register = Library()
-     
+
 def _absolute_url(url):
     if url.startswith('http://') or url.startswith('https://'):
         return url
@@ -16,10 +16,10 @@ def _absolute_url(url):
 def media(filename, flags=''):
     """
      Autor: http://softwaremaniacs.org/blog/2009/03/22/media-tag/
-    
+
     {% load media %}
     <link rel="stylesheet" href="{% media "css/style.css" %}">
-    
+
     {% media "css/style.css" %}                <!-- ...style.css?123456789 -->
     {% media "css/style.css" "no-timestamp" %} <!-- ...style.css -->
     {% media "images/edit.png" "timestamp" %}  <!-- ...edit.png?123456789 -->

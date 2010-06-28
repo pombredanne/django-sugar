@@ -1,12 +1,12 @@
 """
-Source: http://www.djangosnippets.org/snippets/1550/ 
+Source: http://www.djangosnippets.org/snippets/1550/
 
 Notes
 =====
-This allows you to set up a breakpoint anywhere in your template code, 
+This allows you to set up a breakpoint anywhere in your template code,
 by simply writing {% pdb_debug %}.
 
-You can then access your context variables using context.get(..) at the pdb 
+You can then access your context variables using context.get(..) at the pdb
 prompt. Optionally, install the ipdb package for colors, completion, and more (easy_install ipdb).
 
 """
@@ -17,7 +17,7 @@ register = Library()
 
 try:
     import ipdb as pdb
-except ImportError:   
+except ImportError:
     import pdb
 
 class PdbNode(Node):

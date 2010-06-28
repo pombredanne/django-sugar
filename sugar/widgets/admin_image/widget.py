@@ -1,7 +1,7 @@
 ###########
 # Thanks to baumer1122 for his AdminImageWidget snippet: http://www.djangosnippets.org/snippets/934/
 ###########
-  
+
 from django.contrib.admin.widgets import AdminFileWidget
 from django import forms
 from django.utils.translation import ugettext as _
@@ -24,21 +24,21 @@ class AdminImageWidget(AdminFileWidget):
     """
     A FileField Widget that displays an image instead of a file path
     if the current file is an image.
-    
+
     Example
     -------
     Below is an example on how to implement in your app using the provided code.
-            
+
         from sugar.wigets.admin_image.forms import AdminImageForm
-        
+
         class PhotoAdmin(admin.ModelAdmin):
             form = AdminImageForm
             prepopulated_fields = {'slug': ('title',)}
-            
+
         admin.site.register(Photo, PhotoAdmin)
-        
+
     """
-    
+
     def render(self, name, value, attrs=None):
         output = []
         file_name = str(value)
@@ -51,6 +51,6 @@ class AdminImageWidget(AdminFileWidget):
             except IOError: # not image
                 output.append('%s <a target="_blank" href="%s">%s</a> <br />%s ' % \
                     (_('Currently:'), file_path, file_name, _('Change:')))
-            
+
         output.append(super(AdminFileWidget, self).render(name, value, attrs))
         return mark_safe(u''.join(output))
