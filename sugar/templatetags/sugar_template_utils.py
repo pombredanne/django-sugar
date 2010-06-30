@@ -38,3 +38,36 @@ def render_inline(parser, token):
     parser.delete_first_token()
 
     return RenderInlineNode(nodelist)
+
+class ContextManipulator(template.Node):
+    """Add variables to the current template context
+
+    Example:
+        {%% set_context foo="bar" baaz=quux %%}
+        {{ foo }} <- this will display "bar"
+        {{ baaz }} <- the same as {{ quux }}
+
+    """
+
+    def __init__(self, *args):
+        self.args = args
+
+    def render(self, context):
+        for arg in self.args:
+            k, v = arg.split("=", 2)
+            context[k] = template.Variable(v).resolve(context)
+
+        return ""
+
+    @classmethod
+    def set_context_tag(cls, parser, token):
+        try:
+            bits = token.split_contents()
+        except ValueError:
+            raise template.TemplateSyntaxError(
+                _('set_context_tag requires at least one arguments')
+            )
+
+        return ContextManipulator(bits[1], *bits[2:])
+
+register.tag('set_context', ContextManipulator.set_context_tag)
