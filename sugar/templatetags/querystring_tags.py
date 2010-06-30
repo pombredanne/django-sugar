@@ -5,6 +5,7 @@ Query String manipulation filters
 from django import template
 from django.http import QueryDict
 from django.utils.translation import ugettext as _
+from django.utils.html import escape
 
 register = template.Library()
 
@@ -63,7 +64,7 @@ class QueryStringAlterer(template.Node):
                 k, v = arg.split("=", 2)
                 qs[k] = template.Variable(v).resolve(context)
 
-        return qs.urlencode()
+        return escape(qs.urlencode())
 
     @classmethod
     def qs_alter_tag(cls, parser, token):
