@@ -30,6 +30,10 @@ class QueryStringAlterer(template.Node):
 
             delete:name
 
+        Delete a parameter matching a value:
+
+            delete_value:name,value
+
     Examples:
 
     Query string provided as QueryDict::
@@ -37,6 +41,9 @@ class QueryStringAlterer(template.Node):
         {%% qs_alter request.GET foo=bar %%}
         {%% qs_alter request.GET foo=bar baaz=quux %%}
         {%% qs_alter request.GET foo=bar baaz=quux delete:corge %%}
+
+    Remove one facet from a list:
+        {%% qs_alter request.GET foo=bar baaz=quux delete_value:facets,value %%}
 
     Query string provided as string::
 
@@ -60,6 +67,15 @@ class QueryStringAlterer(template.Node):
                 v = arg[7:]
                 if v in qs:
                     del qs[v]
+            elif arg.startswith("delete_value:"):
+                field, value = arg[13:].split(",", 2)
+                value = template.Variable(value).resolve(context)
+
+                f_list = qs.getlist(field)
+                if value in f_list:
+                    f_list.remove(value)
+                    qs.setlist(field, f_list)
+
             else:
                 k, v = arg.split("=", 2)
                 qs[k] = template.Variable(v).resolve(context)
