@@ -15,7 +15,7 @@ class HTTPCacheControlMiddleware(object):
         3. We don't touch requests which already have a Cache-Control header
 
     Usage:
-        1. Add "sugar.utils.cache.HTTPCacheControlMiddleware" to your
+        1. Add "sugar.cache.middleware.HTTPCacheControlMiddleware" to your
            MIDDLEWARE_CLASSES
         2. Add a dictionary to settings.py which has the values you want::
             DEFAULT_HTTP_CACHE_CONTROL = dict(public=True, max_age=300)
