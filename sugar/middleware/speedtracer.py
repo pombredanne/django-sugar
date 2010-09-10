@@ -6,6 +6,7 @@ import inspect
 import time
 import uuid
 import sys
+import warnings
 
 from django.conf import settings
 from django.core.cache import cache
@@ -42,6 +43,8 @@ class SpeedTracerMiddleware(object):
     TRACE_URL = getattr(settings, "SPEEDTRACER_API_URL", '/__speedtracer__/')
 
     def __init__(self):
+        warnings.warn("speedtracer middleware has moved from django-sugar to django-speedtracer: see http://pypi.python.org/pypi/django-speedtracer/", DeprecationWarning)
+
         self.traces = []
         self.call_stack = []
 
