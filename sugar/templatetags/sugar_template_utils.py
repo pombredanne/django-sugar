@@ -71,3 +71,8 @@ class ContextManipulator(template.Node):
         return ContextManipulator(bits[1], *bits[2:])
 
 register.tag('set_context', ContextManipulator.set_context_tag)
+
+@register.filter
+def get_key(dict, key):
+    """Trivial helper for the common case where you have a dictionary and want one value"""
+    return dict.get(key, None)
