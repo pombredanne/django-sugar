@@ -1,4 +1,5 @@
 from django import template
+from django.utils.translation import ugettext as _
 
 register = template.Library()
 
@@ -65,7 +66,7 @@ class ContextManipulator(template.Node):
             bits = token.split_contents()
         except ValueError:
             raise template.TemplateSyntaxError(
-                _('set_context_tag requires at least one arguments')
+                _('set_context tag requires at least one arguments')
             )
 
         return ContextManipulator(bits[1], *bits[2:])
