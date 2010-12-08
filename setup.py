@@ -14,6 +14,7 @@ setup(
         'sugar.admin',
         'sugar.cache',
         'sugar.forms',
+        'sugar.management.commands',
         'sugar.middleware',
         'sugar.templatetags',
         'sugar.views',
