@@ -56,14 +56,26 @@ class ContextManipulator(template.Node):
         {{ baaz }} <- the same as {{ quux }}
 
     """
+    set_global = False
 
     def __init__(self, *args):
+        if args[0] == "global":
+            args = args[1:]
+            self.set_global = True
+
         self.args = args
 
     def render(self, context):
         for arg in self.args:
             k, v = arg.split("=", 2)
-            context[k] = template.Variable(v).resolve(context)
+            resolved_v = template.Variable(v).resolve(context)
+
+            if not self.set_global:
+                context[k] = resolved_v
+            else:
+                # Putting the crazy back in global:
+                for d in context.dicts:
+                    d[k] = resolved_v
 
         return ""
 
