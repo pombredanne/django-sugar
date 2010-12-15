@@ -27,4 +27,8 @@ class CORSTests(self):
 
     def json_test(self):
         cors = CORSMiddleware()
-
+        request = django.http.HttpRequest()
+        response = django.http.HttpResponse('["foo"]',
+                mimetype='application/json')
+        cors.process_response(request, response)
+        self.assertEqual(response.get('Access-Control-Allow-Origin', '*'))

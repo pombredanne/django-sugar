@@ -8,18 +8,18 @@ class CORSMiddleware(object):
     ---------
     Add to your middleware:
 
-    'sugar.middleware.cors.CorsMiddleware',
+    'sugar.middleware.cors.CORSMiddleware',
 
     """
 
     def __init__(self):
         # should any others be added here?
         self.json_mediatypes = ["application/json", 
-                                "application/x-suggestions-json",]
+                                "application/x-suggestions+json",]
 
     def process_response(self, request, response):
         # just get the mediatype (strip charset)
-        mediatype = response.content_type.split(";")[0].lower()
+        mediatype = response.get('content-type', '').split(";")[0].lower()
         if mediatype in self.json_mediatypes:
             response['Access-Control-Allow-Origin'] = '*'
         return response
