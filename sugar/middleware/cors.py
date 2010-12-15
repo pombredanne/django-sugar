@@ -1,7 +1,8 @@
 class CORSMiddleware(object):
     """
     Middleware that serves up JSON media types with a CORS header to 
-    allow people to use your data without requiring them to proxy it.
+    allow people to use your JSON data from JavaScript without requiring 
+    them to proxy it.
     See: http://www.w3.org/TR/cors/
 
     Implement
