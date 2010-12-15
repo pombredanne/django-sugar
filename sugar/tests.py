@@ -1,5 +1,6 @@
 from django.test import TestCase
 from sugar.templatetags.pygment_tags import pygmentize
+from sugar.middleware.cors_middleware import CORSMiddleware
 
 class PygmentTagsTestCase(TestCase):
     
@@ -20,3 +21,10 @@ class PygmentTagsTestCase(TestCase):
         text = u'<pre class="foo">a = 6</pre>'
         self.assertEqual(text, pygmentize(text, 'pre'))
         self.assertNotEqual(text, pygmentize(text, 'pre:foo'))
+
+
+class CORSTests(self):
+
+    def json_test(self):
+        cors = CORSMiddleware()
+
