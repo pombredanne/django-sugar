@@ -23,7 +23,7 @@ class PygmentTagsTestCase(TestCase):
         self.assertNotEqual(text, pygmentize(text, 'pre:foo'))
 
 
-class CORSTests(self):
+class CORSTests(TestCase):
 
     def json_test(self):
         cors = CORSMiddleware()
