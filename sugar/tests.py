@@ -48,7 +48,7 @@ class CORSTests(TestCase):
         cors = CORSMiddleware()
         request = HttpRequest()
         response = HttpResponse('["foo"]',
-                mimetype='application/json')
+                                mimetype='application/json')
         cors.process_response(request, response)
         self.assertEqual(response['access-control-allow-origin'], '*')
 
