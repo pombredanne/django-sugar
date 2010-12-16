@@ -44,10 +44,10 @@ class PygmentTagsTestCase(TestCase):
 
 class CORSTests(TestCase):
 
-    def basic_test(self):
+    def test_middleware(self):
         cors = CORSMiddleware()
         request = HttpRequest()
         response = HttpResponse('["foo"]',
                 mimetype='application/json')
         cors.process_response(request, response)
-        self.assertEqual(response.get('Access-Control-Allow-Origin', '*'))
+        self.assertEqual(response['access-control-allow-origin'], '*')
