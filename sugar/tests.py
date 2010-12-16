@@ -51,3 +51,15 @@ class CORSTests(TestCase):
                 mimetype='application/json')
         cors.process_response(request, response)
         self.assertEqual(response['access-control-allow-origin'], '*')
+
+    def test_non_interference(self):
+        "CORS Middleware shouldn't touch responses outside of its mimetypes"
+        cors = CORSMiddleware()
+
+        request = HttpRequest()
+        response = HttpResponse('Lorem ipsum dolor sit amet',
+                                mimetype='text/html')
+
+        cors.process_response(request, response)
+
+        self.assertFalse(response.has_header('access-control-allow-origin'))
