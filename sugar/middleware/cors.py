@@ -1,7 +1,7 @@
 class CORSMiddleware(object):
     """
-    Middleware that serves up JSON media types with a CORS header to 
-    allow people to use your JSON data from JavaScript without requiring 
+    Middleware that serves up JSON media types with a CORS header to
+    allow people to use your JSON data from JavaScript without requiring
     them to proxy it.
     See: http://www.w3.org/TR/cors/
 
@@ -15,7 +15,7 @@ class CORSMiddleware(object):
 
     def __init__(self):
         # should any others be added here?
-        self.json_mediatypes = ["application/json", 
+        self.json_mediatypes = ["application/json",
                                 "application/x-suggestions+json",]
 
     def process_response(self, request, response):
