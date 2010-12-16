@@ -1,12 +1,36 @@
 import re
+
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import guess_lexer, get_lexer_by_name
 import pygments
+
 from django import template
-from pygments import lexers
-from pygments import formatters
-from BeautifulSoup import BeautifulSoup
 
 register = template.Library()
-regex = re.compile(r'<code(.*?)>(.*?)</code>', re.DOTALL)
+
+CODE_RE = re.compile(r'<code([^>]*)>(.*?)</code>', re.DOTALL)
+CLASS_RE = re.compile(r'class="([^"]+)"')
+
+def pygmentizer(match):
+    code_block = match.group(2)
+
+    lexer = None
+
+    class_match = CLASS_RE.search(match.group(1))
+
+    if class_match:
+        for cls in class_match.group(1).split(" "):
+            try:
+                lexer = get_lexer_by_name(cls)
+                break
+            except ValueError:
+                pass
+
+    if not lexer:
+        lexer = guess_lexer(code_block)
+
+    return pygments.highlight(code_block, lexer, HtmlFormatter())
+
 
 @register.filter(name='pygmentize')
 def pygmentize(value):
@@ -24,23 +48,5 @@ def pygmentize(value):
     {% post.body|pygmentize %}
 
     '''
-    last_end = 0
-    to_return = ''
-    found = 0
-    for match_obj in regex.finditer(value):
-        code_class = match_obj.group(1)
-        code_string = match_obj.group(2)
-        if code_class.find('class'):
-            language = re.split(r'"|\'', code_class)[1]
-            lexer = lexers.get_lexer_by_name(language)
-        else:
-            try:
-                lexer = lexers.guess_lexer(str(code))
-            except ValueError:
-                lexer = lexers.PythonLexer()
-        pygmented_string = pygments.highlight(code_string, lexer, formatters.HtmlFormatter())
-        to_return = to_return + value[last_end:match_obj.start(0)] + pygmented_string
-        last_end = match_obj.end(2)
-        found = found + 1
-    to_return = to_return + value[last_end:]
-    return to_return
+
+    return CODE_RE.sub(pygmentizer, unicode(value))
