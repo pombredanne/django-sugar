@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+from warnings import warn
 import logging
 import sys
 import traceback
@@ -40,7 +41,10 @@ class LoggingCommand(BaseCommand):
         # configured incorrectly by now:
         for handler in root_logger.root.handlers:
             root_logger.removeHandler(handler)
-            handler.close()
+            try:
+                handler.close()
+            except KeyError, e:
+                warn("Error closing logger %s: %s (n.b. this may be a Ubuntu feature" % (handler, e))
 
         console_log = logging.StreamHandler(sys.stderr)
         console_log.setFormatter(logging.Formatter(std_format))
