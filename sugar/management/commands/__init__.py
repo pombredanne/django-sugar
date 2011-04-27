@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from warnings import warn
+import optparse
 import logging
 import sys
 import traceback
@@ -10,6 +11,11 @@ from django.conf import settings
 
 
 class LoggingCommand(BaseCommand):
+    option_list = BaseCommand.option_list + (
+        optparse.make_option('--log-level', dest='log_level', default='warning',
+                             help="Log Level (debug, info, warning, or error)"),
+    )
+
     def configure_logging(self, options):
         if getattr(settings, "LOGGING_PRECONFIGURED", False):
             return
@@ -24,7 +30,7 @@ class LoggingCommand(BaseCommand):
             except:
                 log_level = getattr(logging, log_level.upper(), None)
                 if not log_level:
-                    print >>sys.stderr, "Unknown log level %s; using INFO instead" % log_level
+                    print >> sys.stderr, "Unknown log level %s; using INFO instead" % log_level
                     log_level = logging.INFO
         else:
             verbosity = int(options.get("verbosity", 0))
@@ -56,6 +62,7 @@ class LoggingCommand(BaseCommand):
         # Catch exceptions during logging: contrary to the docs this doesn't
         # work by default:
         logging.raiseExceptions = True
+
         def err_handler(self, record):
             exc_type, exc_val, tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_val, tb, limit=None, file=sys.stderr)
