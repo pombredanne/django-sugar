@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django-sugar',
-    version='0.3',
+    version='0.4',
     license='BSD',
     description='Curated collection of all the sweet Django helpers/utilities \
         developers create, and sometimes recreate too often.',

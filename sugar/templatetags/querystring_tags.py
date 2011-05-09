@@ -32,7 +32,11 @@ class QueryStringAlterer(template.Node):
 
         Delete a parameter matching a value:
 
-            delete_value:name,value
+            delete_value:"name",value
+
+        Delete a parameter matching a value from another variable:
+
+            delete_value:"field_name",value
 
     Examples:
 
@@ -43,7 +47,8 @@ class QueryStringAlterer(template.Node):
         {%% qs_alter request.GET foo=bar baaz=quux delete:corge %%}
 
     Remove one facet from a list:
-        {%% qs_alter request.GET foo=bar baaz=quux delete_value:facets,value %%}
+
+        {%% qs_alter request.GET foo=bar baaz=quux delete_value:"facets",value %%}
 
     Query string provided as string::
 
@@ -70,6 +75,9 @@ class QueryStringAlterer(template.Node):
             elif arg.startswith("delete_value:"):
                 field, value = arg[13:].split(",", 2)
                 value = template.Variable(value).resolve(context)
+
+                if not (field[0] == '"' and field[-1] == '"'):
+                    field = template.Variable(field).resolve(context)
 
                 f_list = qs.getlist(field)
                 if value in f_list:
