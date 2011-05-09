@@ -36,7 +36,7 @@ class QueryStringAlterer(template.Node):
 
         Delete a parameter matching a value from another variable:
 
-            delete_value:"field_name",value
+            delete_value:field_name,value
 
     Examples:
 
