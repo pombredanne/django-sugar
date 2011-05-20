@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import re
 
 from django import template
@@ -22,13 +24,15 @@ def truncchar(value, arg):
     {{ long_blurb|truncchar:20 }}
 
     The above will display 20 characters of the long blurb followed by "..."
-
     '''
+
+    if not isinstance(value, basestring):
+        value = unicode(value)
 
     if len(value) < arg:
         return value
     else:
-        return value[:arg] + '...'
+        return value[:arg] + u'…'
 
 
 @register.filter
