@@ -78,6 +78,8 @@ class QueryStringAlterer(template.Node):
 
                 if not (field[0] == '"' and field[-1] == '"'):
                     field = template.Variable(field).resolve(context)
+                else:
+                    field = field.strip('"\'')
 
                 f_list = qs.getlist(field)
                 if value in f_list:
