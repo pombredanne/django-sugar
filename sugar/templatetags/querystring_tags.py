@@ -53,11 +53,18 @@ class QueryStringAlterer(template.Node):
     Query string provided as string::
 
         {%% qs_alter "foo=baaz" foo=bar %%}">
+
+    Any query string may be stored in a variable in the local template context by making the last
+    argument "as variable_name":
+
+        {%% qs_alter request.GET foo=bar baaz=quux delete:corge as new_qs %%}
     """
 
-    def __init__(self, base_qs, *args):
+    def __init__(self, base_qs, as_variable, *args):
         self.base_qs = template.Variable(base_qs)
         self.args = args
+        # Control whether we return the result or save it to the context:
+        self.as_variable = as_variable
 
     def render(self, context):
         base_qs = self.base_qs.resolve(context)
@@ -90,7 +97,12 @@ class QueryStringAlterer(template.Node):
                 k, v = arg.split("=", 2)
                 qs[k] = template.Variable(v).resolve(context)
 
-        return escape(qs.urlencode())
+        encoded_qs = escape(qs.urlencode())
+        if self.as_variable:
+            context[self.as_variable] = encoded_qs
+            return ""
+        else:
+            return encoded_qs
 
     @classmethod
     def qs_alter_tag(cls, parser, token):
@@ -101,6 +113,12 @@ class QueryStringAlterer(template.Node):
                 _('qs_alter requires at least two arguments: the initial query string and at least one alteration')
             )
 
-        return QueryStringAlterer(bits[1], *bits[2:])
+        if bits[-2] == "as":
+            as_variable = bits[-1]
+            bits = bits[0:-2]
+        else:
+            as_variable = None
+
+        return QueryStringAlterer(bits[1], as_variable, *bits[2:])
 
 register.tag('qs_alter', QueryStringAlterer.qs_alter_tag)
