@@ -20,7 +20,7 @@ def render_to(template):
 
     Examples::
       from sugar.views.decorators import render_to, ajax_request
-      
+
       @render_to('some/tmpl.html')
       def view(request):
           if smth:
@@ -45,17 +45,17 @@ def render_to(template):
         wrapper.__doc__ = func.__doc__
         return wrapper
     return renderer
-    
+
 def ajax_request(func):
     """
     Checks request.method is POST. Return error in JSON in other case.
 
     If view returned dict, returns JsonResponse with this dict as content.
     Examples::
-    
+
     from sugar.views.decorators import render_to, ajax_request
     from sugar.views.helpers import get_object_or_404_ajax
-    
+
     @ajax_request
     def comment_edit(request, object_id):
         comment = get_object_or_404_ajax(CommentNode, pk=object_id)
@@ -69,8 +69,8 @@ def ajax_request(func):
             return {'body_html': comment.body_html}
         else:
             return {'error': {'type': 400, 'message': 'Bad request'}}
-    
-    
+
+
     """
     def wrapper(request, *args, **kwargs):
         if request.method == 'POST':

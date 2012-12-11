@@ -1,0 +1,2 @@
+from cors import CORSTests
+from pygmentize import PygmentTagsTestCase

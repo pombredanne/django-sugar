@@ -11,16 +11,16 @@ class PaginatorNode(template.Node):
 
     Usage:
 
-        {% paginate list_of_documents request.GET %}
+        {%% paginate list_of_documents request.GET %%}
             <ul class="children">
-            {% for doc in page.object_list %}
+            {%% for doc in page.object_list %%}
                 <li>
                     <h2><a href="{{ doc.get_absolute_url }}">{{ doc.title }}</a></h2>
                     {{ doc.summary }}
                 </li>
-            {% endfor %}
+            {%% endfor %%}
             </ul>
-        {% endpaginate %}
+        {%% endpaginate %%}
     """
 
     def __init__(self, nodelist, objects=None, query_string=None, page_size=10):
@@ -60,7 +60,7 @@ class PaginatorNode(template.Node):
         args = token.contents.split()
 
         if not len(args) >= 3:
-            raise template.TemplateSyntaxError, "%r tag must be called like this: {% paginate queryset_or_iterable query_string [page_size] %}" % args[0]
+            raise template.TemplateSyntaxError, "%r tag must be called like this: {%% paginate queryset_or_iterable query_string [page_size] %%}" % args[0]
 
         nodelist = parser.parse(('endpaginate',))
 

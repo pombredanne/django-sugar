@@ -8,7 +8,7 @@ class AdminImageForm(forms.ModelForm):
     model that has a 'file' field. This assumes your models
     has a file field. If it doesn't then don't use this form
     but create your own.
-    
+
     '''
-    
+
     file = forms.FileField(widget=AdminImageWidget, required=True)

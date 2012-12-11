@@ -1,7 +1,8 @@
+# encoding: utf-8
+
 import re
 
 from django import template
-from django.utils import text
 
 register = template.Library()
 
@@ -23,13 +24,15 @@ def truncchar(value, arg):
     {{ long_blurb|truncchar:20 }}
 
     The above will display 20 characters of the long blurb followed by "..."
-
     '''
+
+    if not isinstance(value, basestring):
+        value = unicode(value)
 
     if len(value) < arg:
         return value
     else:
-        return value[:arg] + '...'
+        return value[:arg] + u'…'
 
 
 @register.filter
@@ -60,19 +63,3 @@ def replace(string, args):
     new = args.split(args[0])[2]
 
     return string.replace(old, new)
-
-
-@register.filter
-def truncatehtml(string, length):
-    """
-    Truncate the text to a certain length, honoring html.
-    
-    Usage:
-    
-    {{ my_variable|truncatehtml:250 }}
-    
-    """
-    
-    return text.truncate_html_words(string, length)
-
-truncatehtml.is_safe = True

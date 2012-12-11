@@ -5,7 +5,6 @@ try:
 except ImportError:
     import md5
 
-
 from django.db.models.manager import Manager
 from django.utils.encoding import smart_str
 
@@ -13,7 +12,7 @@ from django.utils.encoding import smart_str
 def clean_cache_key(key):
     '''Replace spaces with '-' and hash if length is greater than 250.'''
 
-    #logic below borrowed from http://richwklein.com/2009/08/04/improving-django-cache-part-ii/ 
+    #logic below borrowed from http://richwklein.com/2009/08/04/improving-django-cache-part-ii/
     cache_key = re.sub(r'\s+', '-', key)
     cache_key = smart_str(cache_key)
 

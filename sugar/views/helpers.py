@@ -41,3 +41,4 @@ def get_object_or_none(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except queryset.model.DoesNotExist:
         return None
+
